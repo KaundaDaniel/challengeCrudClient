@@ -1,23 +1,35 @@
 package com.kaunda.crudValidation.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kaunda.crudValidation.entities.Client;
+import jakarta.validation.constraints.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class ClientDto {
+public class ClientDto  implements Serializable {
     private Long id;
+    @NotBlank(message = "O Campo nome é obrigatório!")
+    @Size(min = 3, max = 70, message = "Deve ter no minimo 3 e maximo 70")
     private String name;
+    @NotBlank(message = "O Campo nome é obrigatório!")
+    @Size(min = 10, message = "O Campo CPF é obrigatório!")
     private String cpf;
+    @Positive(message = "Não Pode ter valor Negativo!")
     private Double income;
-    private LocalDate birthdate;
+    @FutureOrPresent(message = "Insira uma data válida!")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthDate;
+    @Positive(message = "Não Pode ter valor Negativo!")
     private Integer children;
 
-    public ClientDto(Long id, String name, String cpf, Double income, LocalDate birthdate, Integer children) {
+    public ClientDto(Long id, String name, String cpf, Double income, LocalDate birthDate, Integer children) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
         this.income = income;
-        this.birthdate = birthdate;
+        this.birthDate = birthDate;
         this.children = children;
     }
 
@@ -25,7 +37,7 @@ public class ClientDto {
         id= clientEntity.getId();
         name= clientEntity.getName();
         income= clientEntity.getIncome();
-        birthdate=clientEntity.getBirthdate();
+        birthDate=clientEntity.getBirthDate();
         children= clientEntity.getChildren();
     }
 
@@ -61,13 +73,13 @@ public class ClientDto {
         this.income = income;
     }
 
-    public LocalDate getBirthdate() {
-        return birthdate;
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public void setBirthdate(LocalDate birthdate) {
-        this.birthdate = birthdate;
-    }
 
     public Integer getChildren() {
         return children;
