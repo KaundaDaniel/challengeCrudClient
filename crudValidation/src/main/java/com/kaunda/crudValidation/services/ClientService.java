@@ -3,7 +3,7 @@ package com.kaunda.crudValidation.services;
 import com.kaunda.crudValidation.dto.ClientDto;
 import com.kaunda.crudValidation.entities.Client;
 import com.kaunda.crudValidation.repositories.ClientRepository;
-import com.kaunda.crudValidation.services.exceptions.DataBaseException;
+import com.kaunda.crudValidation.services.exceptions.DatabaseException;
 import com.kaunda.crudValidation.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ClientService {
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
 
     public ClientService(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
@@ -63,7 +63,7 @@ public class ClientService {
         try {
             clientRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataBaseException("Falha de integridad referencial");
+            throw new DatabaseException("Falha de integridad referencial");
         }
     }
 
@@ -71,7 +71,7 @@ public class ClientService {
         client.setName(clientDto.getName());
         client.setCpf(client.getCpf());
         client.setIncome(clientDto.getIncome());
-        client.setBirthdate(clientDto.getBirthdate());
+        client.setBirthDate(clientDto.getBirthDate());
         client.setChildren(clientDto.getChildren());
     }
 }
